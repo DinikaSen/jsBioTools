@@ -42,14 +42,14 @@ switch (platform) {
 
 function downloadClustalOmega(url) {
     console.log('Downloading Clustal Omega from ',url);
-    download(url,{directory:'./clustalOmega/bin',filename:'clustalo'},function(err) {
+    download(url,{directory:'./clustalOmega/util',filename:'clustalo'},function(err) {
         if (err) {
             console.log('Download failed');
             console.log(err);
         }
         else {
             console.log('Download complete');
-            //makeExcecutable();
+            makeExcecutable();
             }
     });
 }
@@ -57,7 +57,7 @@ function downloadClustalOmega(url) {
 //Debug
 function makeExcecutable(){
     if(platform=='linux' || platform=='freebsd'){
-        child_process.exec('chmod u+x clustalo',{cwd:'../bin'},function (err) {
+        child_process.exec('chmod u+x clustalo',{cwd:__dirname},function (err) {
             if(err){
                 console.log('ERROR: ' + err);
             }else{
