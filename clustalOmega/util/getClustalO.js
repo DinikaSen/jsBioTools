@@ -61,7 +61,7 @@ function makeExcecutable(){
             if(err){
                 console.log('ERROR: ' + err);
             }else{
-                console.log('done')
+                console.log('Excecutable is made')
             }
         })
         ;
