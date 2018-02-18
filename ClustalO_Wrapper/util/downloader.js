@@ -46,8 +46,6 @@ downloader.makeExecutable = function (location) {
         child_process.exec('chmod u+x clustalo', {cwd: location}, function (err) {
             if (err) {
                 console.log('ERROR: ' + err);
-            } else {
-                console.log('Executable is made')
             }
         });
     } else if (platform == 'darwin') {
@@ -57,7 +55,7 @@ downloader.makeExecutable = function (location) {
             }
         });
     } else if (platform == 'windows') {
-        //TODO AFTER FIGURING OUT A WAY TO BUILD EXEC.
+        console.log('You have to install Clustal Omega manually for Windows');
     }
 }
 

@@ -4,14 +4,18 @@
   "description": "Bioinformatics Tool Wrapper Modudels",
   "main": "test.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ClustalO_Wrapper/test/clustalOmega.test.js"
   },
   "author": "Dinika Senarath",
   "license": "MIT",
   "dependencies": {
     "download-file": "^0.1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1",
+    "test-console": "^1.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DinikaSen/jsBioTools.git"

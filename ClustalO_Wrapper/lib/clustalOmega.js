@@ -6,73 +6,76 @@ var resolve = require('path').resolve;
 
 
 var clustalOmega = {
-    execLocation: './bin'             // Default excecutipn path
+    execLocation: './bin'             // Default excecution path
 };
 
-//download Clustal Omega
+/*
+download Clustal Omega
+ */
 clustalOmega.getClustalO = function(){
     downloader.getClustalOmega();
 }
 
-//set a custom location where Clustal Omega binary is located
+/*
+set a custom location where Clustal Omega binary is located
+ */
 clustalOmega.setCustomLocation = function (location){
     var path = location + '/clustalo'
-
-    //TODO Validate path
-
     if (fs.existsSync(path)) {
-        clustalOmega.execLocation = path;
-        downloader.makeExecutable(location);
-        console.log('Custom execution path is set');
+        downloader.makeExecutable(resolve(location));
+        clustalOmega.execLocation = resolve(location);
+        console.log('Custom execution path is set to '+resolve(location));
     }else{
-        console.log(path + ' does not exist. \nPlease check whether the Clustal Omega binary file is located in the given path with the name \'clustalo\'.');
+        console.log(resolve(path) + ' does not exist. \nPlease check whether the Clustal Omega binary file is located in the given path with the name \'clustalo\'.');
     }
-    clustalOmega.execLocatio = path;
+
 }
 
-//Align an unaligned sequence file
-clustalOmega.alignSeqFile = function (inputFile, outputFile,outputFormat, callback){
-    alignOneFile(inputFile,outputFile,outputFormat,callback);
+/*
+Align an unaligned sequence file
+ */
+clustalOmega.alignSeqFile = function (inputFile, outputFormat,callback){
+    alignOneFile(inputFile,outputFormat,callback);
 }
 
-//Align an unaligned seq file and an HMM
-clustalOmega.alignSeqWithHmm = function (inputFile1,inputFile2, outputFile, outputFormat, callback){
-    alignTwoFiles('file&hmm',inputFile1,inputFile2,outputFile,outputFormat,callback);
+/*
+Align an unaligned seq file and an HMM
+ */
+clustalOmega.alignSeqWithHmm = function (inputFile1,inputFile2,outputFormat,callback){
+    alignTwoFiles('file&hmm',inputFile1,inputFile2,outputFormat,callback);
+}
+
+/*
+Align an unaligned seq file and an HMM
+ */
+clustalOmega.alignSeqWithProfile = function (inputFile1,inputFile2,outputFormat,callback){
+    alignTwoFiles('prof&file',inputFile1,inputFile2,outputFormat,callback);
+}
+
+/*
+Align an unaligned seq file and an HMM
+ */
+clustalOmega.alignTwoProfiles = function (inputFile1,inputFile2,outputFormat,callback){
+    alignTwoFiles('twoProfiles',inputFile1,inputFile2,outputFormat,callback);
 }
 
 
-function alignOneFile(inputFile, outputFile, outputFormat, callback) {
-    var clustalCommand = '-i ' + inputFile + ' -o ' + outputFile + ' --outfmt=' + outputFormat + ' --force';
-    run(clustalCommand, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Alignment successful..!");
-        }
-    });
+function alignOneFile(inputFile, outputFormat, callback) {
+    var clustalCommand = '-i ' + inputFile + ' --outfmt=' + outputFormat;
+    run(clustalCommand,callback);
 }
 
-function alignTwoFiles(alignmentType, inputFile1, inputfile2, outputFile, outputFormat, callback) {
-
-    if (alignmentType == 'seqFile') {
-        var clustalCommand = '-i ' + inputFile + ' -o ' + outputFile + ' --outfmt=' + outputFormat + ' --force';
-    }
-    else if (alignmentType == 'file&hmm') {
-        var clustalCommand = '-i ' + inputFile1 + ' --hmm-in=' + inputfile2 + '-o' + outputFile + ' --outfmt=' + outputFormat + ' --force';
+function alignTwoFiles(alignmentType,inputFile1,inputfile2,outputFile,outputFormat,callback) {
+    if (alignmentType == 'file&hmm') {
+        var clustalCommand = '-i ' + inputFile1 + ' --hmm-in=' + inputfile2 + ' --outfmt=' + outputFormat;
     }
     else if (alignmentType == 'prof&file') {
-        //TODO
+        var clustalCommand = '-i ' + inputFile1 + ' --p1=' + inputfile2 + ' --outfmt=' + outputFormat;
     }
     else if (alignmentType == 'twoProfiles') {
-        //TODO
+        var clustalCommand = '--p1=' + inputFile1 + ' --p2=' + inputfile2 + ' --outfmt=' + outputFormat;
     }
-    run(clustalCommand, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("Alignment successful..!");
-        }
-    });
+    run(clustalCommand,callback);
 }
 
 
@@ -83,5 +86,6 @@ function run(command, callback) {
     console.log('RUNNING', command);
     child_process.exec(fullCommand, callback);
 }
+
 
 module.exports = clustalOmega;
