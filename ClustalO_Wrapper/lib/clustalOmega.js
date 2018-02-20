@@ -61,11 +61,11 @@ clustalOmega.alignTwoProfiles = function (inputFile1,inputFile2,outputFormat,cal
 
 
 function alignOneFile(inputFile, outputFormat, callback) {
-    var clustalCommand = '-i ' + inputFile + ' --outfmt=' + outputFormat;
+    var clustalCommand = '-i ' + resolve(inputFile) + ' --outfmt=' + outputFormat;
     run(clustalCommand,callback);
 }
 
-function alignTwoFiles(alignmentType,inputFile1,inputfile2,outputFile,outputFormat,callback) {
+function alignTwoFiles(alignmentType,inputFile1,inputfile2,outputFormat,callback) {
     if (alignmentType == 'file&hmm') {
         var clustalCommand = '-i ' + inputFile1 + ' --hmm-in=' + inputfile2 + ' --outfmt=' + outputFormat;
     }
@@ -84,7 +84,7 @@ function run(command, callback) {
     var fullCommand = clustalOmega.execLocation + '/./clustalo ' + command;
 
     console.log('RUNNING', command);
-    child_process.exec(fullCommand, callback);
+    child_process.exec(fullCommand, {maxBuffer: 1024 * 1000}, callback);
 }
 
 
