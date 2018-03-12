@@ -3,10 +3,10 @@ expect = require('chai').expect;
 should = require('chai').should();
 var stdout = require("test-console").stdout;
 var stderr = require("test-console").stderr;
-const assert = require('assert');
-var restoreStdout;
 var resolve = require('path').resolve;
+const assert = require('assert');
 
+var restoreStdout;
 
 var clustalOmega = require('../lib/clustalOmega');
 
@@ -60,7 +60,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -75,7 +75,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -90,7 +90,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -105,7 +105,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -120,7 +120,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -135,7 +135,7 @@ describe('#Align an unaligned sequence file', function ()
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1],"Success.!\n")
+            assert.deepEqual(inspect.output[1],"Success.!\n");
             done();
         });
     });
@@ -144,8 +144,8 @@ describe('#Align an unaligned sequence file', function ()
 describe('#Align an unaligned seq file and an HMM', function () {
     it('should execute clustalo command with no error', function (done) {
         var inspect = stdout.inspect();
-        var input = 'ClustalO_Wrapper/test/samples/example2.fasta'
-        var hmm = 'ClustalO_Wrapper/test/samples/example2-hmm.hmm'
+        var input = 'ClustalO_Wrapper/test/samples/example2.fasta';
+        var hmm = 'ClustalO_Wrapper/test/samples/example2-hmm.hmm';
         clustalOmega.alignSeqWithHmm(input,hmm, 'fasta', function (err) {
             if (err) {
                 console.log(err);
@@ -154,7 +154,7 @@ describe('#Align an unaligned seq file and an HMM', function () {
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1], "Success.!\n")
+            assert.deepEqual(inspect.output[1], "Success.!\n");
             done();
         });
     });
@@ -163,8 +163,8 @@ describe('#Align an unaligned seq file and an HMM', function () {
 describe('#Align an unaligned seq file and a profile', function () {
     it('should execute clustalo command with no error', function (done) {
         var inspect = stdout.inspect();
-        var p1 = 'ClustalO_Wrapper/test/samples/prof1.profile'
-        var f = 'ClustalO_Wrapper/test/samples/prof1Seq.ali'
+        var p1 = 'ClustalO_Wrapper/test/samples/prof1.profile';
+        var f = 'ClustalO_Wrapper/test/samples/prof1Seq.ali';
         clustalOmega.alignSeqWithProfile(f,p1, 'fasta', function (err) {
             if (err) {
                 console.log(err);
@@ -173,7 +173,7 @@ describe('#Align an unaligned seq file and a profile', function () {
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1], "Success.!\n")
+            assert.deepEqual(inspect.output[1], "Success.!\n");
             done();
         });
     });
@@ -183,8 +183,8 @@ describe('#Align an unaligned seq file and a profile', function () {
 describe('#Align two profiles', function () {
     it('should execute clustalo command (output format = fasta)', function (done) {
         var inspect = stdout.inspect();
-        var p1 = 'ClustalO_Wrapper/test/samples/prof1.profile'
-        var p2 = 'ClustalO_Wrapper/test/samples/prof2.profile'
+        var p1 = 'ClustalO_Wrapper/test/samples/prof1.profile';
+        var p2 = 'ClustalO_Wrapper/test/samples/prof2.profile';
         clustalOmega.alignTwoProfiles(p1,p2, 'fasta', function (err) {
             if (err) {
                 console.log(err);
@@ -193,9 +193,8 @@ describe('#Align two profiles', function () {
                 console.log('Success.!');
             }
             inspect.restore();
-            assert.deepEqual(inspect.output[1], "Success.!\n")
+            assert.deepEqual(inspect.output[1], "Success.!\n");
             done();
         });
     });
 });
-

@@ -13,6 +13,7 @@
     "download-file": "^0.1.5"
   },
   "devDependencies": {
+    "typescript": "^2.6.2",
     "chai": "^4.1.2",
     "istanbul": "^0.4.5",
     "mocha": "^5.0.1",

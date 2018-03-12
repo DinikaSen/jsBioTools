@@ -1,4 +1,3 @@
-
 const os = require('os');
 const download = require('download-file');
 const fs = require('fs');
