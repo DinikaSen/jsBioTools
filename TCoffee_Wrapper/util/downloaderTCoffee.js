@@ -13,40 +13,40 @@ downloader.getTCoffee = function () {
     switch (platform) {
         case ('linux'):
             address += 'linux/T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.bin';
-            downloadCO(address);
+            downloadTC(address);
             break;
 
         case ('darwin'):
             address += 'macosx/T-COFFEE_installer_Version_11.00.8cbe486_macosx_x64.dmg';
-            downloader.downloadClustalOmega(address);
+            downloadTC(address);
             break;
 
         default :
             console.log("T-Coffee is not available for your operating system type");
     }
-}
+};
 
 downloader.makeExecutable = function (location) {
-    if (platform == 'linux') {
+    if (platform === 'linux') {
         child_process.exec('chmod +x T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.bin', {cwd: location}, function (err) {
             if (err) {
                 console.log('ERROR: ' + err);
-            }else{
-                child_process.exec('./T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.bin', {cwd: location}, function (err){
-                    if(err){
+            } else {
+                child_process.exec('./T-COFFEE_installer_Version_11.00.8cbe486_linux_x64.bin', {cwd: location}, function (err) {
+                    if (err) {
                         console.log(err);
-                    }else{
+                    } else {
                         console.log('T-Coffee installer launched successfully.');
                     }
                 });
             }
         });
-    } else if (platform == 'darwin') {
-        //TODO : check available version and installing method
+    } else if (platform === 'darwin') {
+        console.log('Files saved to ./bin.\nDouble Click on installer icon in DMG folder to start installation');
     }
-}
+};
 
-downloadCO = function (url) {
+downloadTC = function (url) {
     console.log('Downloading T-Coffee from ', url);
     download(url, {directory: './bin'}, function (err) {
         if (err) {
@@ -58,8 +58,8 @@ downloadCO = function (url) {
             downloader.makeExecutable('./bin');
         }
     });
-}
+};
 
-downloader.getTCoffee();
+//downloader.getTCoffee();
 
 module.exports = downloader;

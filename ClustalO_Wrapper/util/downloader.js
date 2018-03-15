@@ -22,17 +22,17 @@ downloader.getClustalOmega = function () {
             break;
         case ('darwin'):
             address += 'clustal-omega-1.2.3-macosx';
-            downloader.downloadClustalOmega(address);
+            downloadCO(address);
             break;
 
         case ('win32') :
             address += 'clustal-omega-1.2.2-win64.zip';
-            downloader.downloadCO(address);
+            downloadCO(address);
             break;
 
         case ('freebsd') :
             address += 'clustalo-1.2.2-FreeBSD-x86-64';
-            downloader.downloadCO(address);
+            downloadCO(address);
             break;
 
         default :
