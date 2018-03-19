@@ -1,11 +1,12 @@
 var child_process = require('child_process');
 var fs = require('fs');
-var resolve = require('path').resolve;
+var path = require('path');
 
 var downloader = require('../util/downloader');
 
 var clustalOmega = {
-    execLocation: './bin'
+    execLocation: './bin',
+    customExecLocation: null
 };
 
 /*
@@ -19,13 +20,13 @@ clustalOmega.getClustalO = function () {
 set a custom location where Clustal Omega binary is located
  */
 clustalOmega.setCustomLocation = function (location) {
-    var path = location + '/clustalo';
-    if (fs.existsSync(path)) {
-        downloader.makeExecutable(resolve(location));
-        clustalOmega.execLocation = resolve(location);
-        console.log('Custom execution path is set to ' + resolve(location));
+    var binPath = location + '/clustalo';
+    if (fs.existsSync(binPath)) {
+        downloader.makeExecutable(path.resolve(location));
+        clustalOmega.customExecLocation = path.resolve(location);
+        console.log('Custom execution path is set to ' + path.resolve(location));
     } else {
-        console.log(resolve(path) + ' does not exist. ' +
+        console.log(binPath + ' does not exist. ' +
             '\nPlease check whether the Clustal Omega binary file is located' +
             ' in the given path with the name \'clustalo\'.');
     }
@@ -68,15 +69,15 @@ clustalOmega.alignTwoProfiles = function (inputFile1, inputFile2, outputFormat, 
 
 
 function alignOneFile(inputFile, outputFormat, callback) {
-    var clustalCommand = '-i ' + resolve(inputFile) + ' --outfmt=' + outputFormat;
+    var clustalCommand = '-i ' + path.resolve(inputFile) + ' --outfmt=' + outputFormat;
     run(clustalCommand, function(err,stdOut,stdError){
         return callback(err,stdOut,stdError);
     });
 }
 
 function alignOneSequence(input, inputFile, outputFormat, callback) {
-    fs.writeFileSync('input.' + outputFormat, input)
-    var clustalCommand = '-i ' + resolve(inputFile) + ' --outfmt=' + outputFormat;
+    fs.writeFileSync('input.' + outputFormat, input);
+    var clustalCommand = '-i ' + path.resolve(inputFile) + ' --outfmt=' + outputFormat;
     run(clustalCommand, function(err,stdOut,stdError){
         fs.unlinkSync('input.' + outputFormat);
         return callback(err,stdOut,stdError);
@@ -99,10 +100,12 @@ function alignTwoFiles(alignmentType, inputFile1, inputfile2, outputFormat, call
 }
 
 function run(command, callback) {
-
-    var fullCommand = clustalOmega.execLocation + '/./clustalo ' + command;
-
-    console.log('RUNNING', command);
+    if ( clustalOmega.customExecLocation != null){
+        var fullCommand = clustalOmega.customExecLocation + '/./clustalo ' + command;
+    }else {
+        var fullCommand = clustalOmega.execLocation + '/./clustalo ' + command;
+    }
+    console.log('RUNNING', fullCommand);
     child_process.exec(fullCommand, {maxBuffer: 1024 * 1000}, callback);
 }
 

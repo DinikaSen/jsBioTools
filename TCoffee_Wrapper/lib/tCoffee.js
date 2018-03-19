@@ -3,16 +3,7 @@ var fs = require('fs');
 var path = require('path');
 var glob = require("glob");
 
-var downloader = require('../util/downloaderTCoffee');
-
 var tcoffee = {};
-
-/*
-download T-Coffee
- */
-tcoffee.getTCoffee = function () {
-    downloader.getTCoffee();
-};
 
 /*
 MSA of Protein Sequences using T-Coffee Default

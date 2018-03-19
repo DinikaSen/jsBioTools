@@ -13,7 +13,7 @@ downloader.getClustalOmega = function () {
     switch (platform) {
         case ('linux'):
             var architecture = os.arch();
-            if (architecture == 'x64') {
+            if (architecture === 'x64') {
                 address += 'clustalo-1.2.4-Ubuntu-x86_64';
             } else {
                 address += 'clustalo-1.2.4-Ubuntu-32-bit';
@@ -41,19 +41,19 @@ downloader.getClustalOmega = function () {
 }
 
 downloader.makeExecutable = function (location) {
-    if (platform == 'linux' || platform == 'freebsd') {
+    if (platform === 'linux' || platform === 'freebsd') {
         child_process.exec('chmod u+x clustalo', {cwd: location}, function (err) {
             if (err) {
                 console.log('ERROR: ' + err);
             }
         });
-    } else if (platform == 'darwin') {
+    } else if (platform === 'darwin') {
         child_process.exec('chmod 755 clustalo', {cwd: location}, function (err) {
             if (err) {
                 console.log(err);
             }
         });
-    } else if (platform == 'windows') {
+    } else if (platform === 'windows') {
         console.log('You have to install Clustal Omega manually for Windows');
     }
 }

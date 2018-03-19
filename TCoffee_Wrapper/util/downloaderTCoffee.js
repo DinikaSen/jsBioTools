@@ -60,6 +60,6 @@ downloadTC = function (url) {
     });
 };
 
-//downloader.getTCoffee();
+downloader.getTCoffee();
 
 module.exports = downloader;

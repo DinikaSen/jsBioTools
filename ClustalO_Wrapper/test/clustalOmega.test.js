@@ -1,3 +1,8 @@
+/*
+This tests require Clustal Omega binary executable to be installed in ClustalO_Wrapper/lib/bin/
+(Which is done by default)
+*/
+
 require('mocha');
 expect = require('chai').expect;
 should = require('chai').should();
@@ -11,14 +16,14 @@ var restoreStdout;
 var clustalOmega = require('../lib/clustalOmega');
 
 
-describe('#Set custom blast location', function () {
+describe('#Set custom execution path', function () {
 
     it('execLocation should be set', function (done) {
         var location = 'ClustalO_Wrapper/lib/bin';
         restoreStdout = stdout.ignore();
         clustalOmega.setCustomLocation(location);
         restoreStdout();
-        clustalOmega.execLocation.should.equal(resolve(location));
+        clustalOmega.customExecLocation.should.equal(resolve(location));
         done();
     });
     it('execLocation should not be set', function (done) {
@@ -26,7 +31,7 @@ describe('#Set custom blast location', function () {
         restoreStdout = stdout.ignore();
         clustalOmega.setCustomLocation(location);
         restoreStdout();
-        clustalOmega.execLocation.should.not.equal(resolve(location));
+        clustalOmega.customExecLocation.should.not.equal(resolve(location));
         done();
     });
 });
