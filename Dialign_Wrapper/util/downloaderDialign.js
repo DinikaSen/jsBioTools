@@ -8,9 +8,8 @@ var targz = require('targz');
 var address = 'https://bibiserv.cebitec.uni-bielefeld.de/';
 var platform = os.platform();
 
-var downloader = {};
 
-downloader.getDialignTool = function () {
+getDialignTool = function () {
     if (platform == 'darwin') {
         address += 'resources/download/dialign/dialign-2.2.1-universal-osx.dmg.zip';
         downloadDaln(address,platform);
@@ -72,4 +71,4 @@ makeExecutable = function (location) {
 }
 
 
-module.exports = downloader;
+getDialignTool();

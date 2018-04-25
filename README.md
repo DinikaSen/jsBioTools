@@ -8,4 +8,7 @@ Anyone who wishes to develop Node.js bioinformatics applications can include the
 The required tools can be dowloaded and installed via the module itself. What ypu have to do is just include the modele and use the API to call tool's functions.
 
 ------API------
+
+"test": "find ./tests -name '*.test.js' | xargs mocha -R spec",
+    "coverage": "istanbul cover _mocha ClustalO_Wrapper/test/clustalOmega.test.js -x *.test.js "
         

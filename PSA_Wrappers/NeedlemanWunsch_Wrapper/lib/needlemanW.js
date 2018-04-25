@@ -79,7 +79,7 @@ function fileAlignment(inputFile, scoreFlag, matrixFlag, matchScore, misMatchSco
         });
     }else{
         var err = 'Input file does not exist';
-        return callback(err,null)
+        return callback(err,null);
     }
 
 }

@@ -1,19 +1,13 @@
 var child_process = require('child_process');
 var fs = require('fs');
 var path = require('path');
+var uuidv4 = require('uuid/v4');
 
 var downloader = require('../util/downloader');
 
 var clustalOmega = {
-    execLocation: './bin',
+    execLocation: path.resolve(path.join(__dirname,'../util/bin/')),
     customExecLocation: null
-};
-
-/*
-download Clustal Omega
- */
-clustalOmega.getClustalO = function () {
-    downloader.getClustalOmega();
 };
 
 /*
@@ -40,10 +34,10 @@ clustalOmega.alignSeqFile = function (inputFile, outputFormat, callback) {
 };
 
 /*
-Align an unaligned input string sequence
+Align an unaligned input string of sequences of FASTA format and get output in accepted format
  */
-clustalOmega.alignSequence = function (input, outputFormat, callback) {
-    alignOneSequence(input,'input.' + outputFormat, outputFormat, callback);
+clustalOmega.alignSeqString = function (input, outputFormat, callback) {
+    alignStringSequences(input, outputFormat, callback);
 };
 
 /*
@@ -69,34 +63,47 @@ clustalOmega.alignTwoProfiles = function (inputFile1, inputFile2, outputFormat, 
 
 
 function alignOneFile(inputFile, outputFormat, callback) {
-    var clustalCommand = '-i ' + path.resolve(inputFile) + ' --outfmt=' + outputFormat;
-    run(clustalCommand, function(err,stdOut,stdError){
-        return callback(err,stdOut,stdError);
-    });
+    if(fs.existsSync(inputFile)){
+        var clustalCommand = '-i ' + path.resolve(inputFile) + ' --outfmt=' + outputFormat;
+        run(clustalCommand, function(err,stdOut,stdError){
+            return callback(err,stdOut,stdError);
+        });
+    }
+    else{
+            var err = 'Input file does not exist';
+            return callback(err,null);
+    }
 }
 
-function alignOneSequence(input, inputFile, outputFormat, callback) {
-    fs.writeFileSync('input.' + outputFormat, input);
-    var clustalCommand = '-i ' + path.resolve(inputFile) + ' --outfmt=' + outputFormat;
-    run(clustalCommand, function(err,stdOut,stdError){
-        fs.unlinkSync('input.' + outputFormat);
-        return callback(err,stdOut,stdError);
+function alignStringSequences(input, outputFormat, callback) {
+    const tempInputFile = __dirname + '/' + uuidv4() + '.fasta';
+    fs.writeFileSync(tempInputFile, input);
+    var clustalCommand = '-i ' + path.resolve(tempInputFile) + ' --outfmt=' + outputFormat;
+    run(clustalCommand, function(err,stdOut){
+        fs.unlinkSync(tempInputFile);
+        return callback(err,stdOut);
     });
 }
 
 function alignTwoFiles(alignmentType, inputFile1, inputfile2, outputFormat, callback) {
-    if (alignmentType === 'file&hmm') {
-        var clustalCommand = '-i ' + inputFile1 + ' --hmm-in=' + inputfile2 + ' --outfmt=' + outputFormat;
+    if(fs.existsSync(inputFile1) && fs.existsSync(inputfile2)){
+        if (alignmentType === 'file&hmm') {
+            var clustalCommand = '-i ' + inputFile1 + ' --hmm-in=' + inputfile2 + ' --outfmt=' + outputFormat;
+        }
+        else if (alignmentType === 'prof&file') {
+            var clustalCommand = '-i ' + inputFile1 + ' --p1=' + inputfile2 + ' --outfmt=' + outputFormat;
+        }
+        else if (alignmentType === 'twoProfiles') {
+            var clustalCommand = '--p1=' + inputFile1 + ' --p2=' + inputfile2 + ' --outfmt=' + outputFormat;
+        }
+        run(clustalCommand, function(err,stdOut){
+            return callback(err,stdOut);
+        });
     }
-    else if (alignmentType === 'prof&file') {
-        var clustalCommand = '-i ' + inputFile1 + ' --p1=' + inputfile2 + ' --outfmt=' + outputFormat;
+    else{
+        var err = 'Input file does not exist';
+        return callback(err, null);
     }
-    else if (alignmentType === 'twoProfiles') {
-        var clustalCommand = '--p1=' + inputFile1 + ' --p2=' + inputfile2 + ' --outfmt=' + outputFormat;
-    }
-    run(clustalCommand, function(err,stdOut,stdError){
-        return callback(err,stdOut,stdError);
-    });
 }
 
 function run(command, callback) {

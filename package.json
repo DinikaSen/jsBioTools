@@ -4,14 +4,15 @@
   "description": "Bioinformatics Tool Wrapper Modudels",
   "main": "test.js",
   "scripts": {
-    "test": "mocha ClustalO_Wrapper/test/clustalOmega.test.js",
-    "coverage": "istanbul cover _mocha ClustalO_Wrapper/test/clustalOmega.test.js -x *.test.js"
+    "test": "find -name '*.test.js' | xargs mocha -R spec",
+    "coverage": "istanbul cover _mocha ClustalO_Wrapper/test/clustalOmega.test.js TCoffee_Wrapper/test/tCoffee.test.js Dialign_Wrapper/test/dialign.test.js PSA_Wrappers/NeedlemanWunsch_Wrapper/test/needlemanW.test.js PSA_Wrappers/SmithWaterman_Wrapper/test/smithW.test.js -x *.test.js"
   },
   "author": "Dinika Senarath",
   "license": "MIT",
   "dependencies": {
     "download-file": "^0.1.5",
-    "glob": "^7.1.2"
+    "glob": "^7.1.2",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",

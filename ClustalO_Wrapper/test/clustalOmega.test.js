@@ -1,6 +1,8 @@
 /*
-This tests require Clustal Omega binary executable to be installed in ClustalO_Wrapper/lib/bin/
-(Which is done by default)
+This tests require clustalo binary executable to be installed in ClustalO_Wrapper/util/bin/ under name 'clustalo'
+
+To download clustalo binary executable and build in the target location run following file :
+                    ClustalO_Wrapper/util/downloader.js
 */
 
 require('mocha');
@@ -19,7 +21,7 @@ var clustalOmega = require('../lib/clustalOmega');
 describe('#Set custom execution path', function () {
 
     it('execLocation should be set', function (done) {
-        var location = 'ClustalO_Wrapper/lib/bin';
+        var location = 'ClustalO_Wrapper/util/bin';
         restoreStdout = stdout.ignore();
         clustalOmega.setCustomLocation(location);
         restoreStdout();
@@ -27,7 +29,7 @@ describe('#Set custom execution path', function () {
         done();
     });
     it('execLocation should not be set', function (done) {
-        var location = 'ClustalO_Wrapper/lib';
+        var location = 'ClustalO_Wrapper/util';
         restoreStdout = stdout.ignore();
         clustalOmega.setCustomLocation(location);
         restoreStdout();
@@ -155,7 +157,7 @@ describe('#Align a string input of sequences', function () {
             'ACDEFGHILMNXXXXXPQRSTVWYXXXX\n' +
             '>test4\n' +
             'XXXACDEFGHIKLMNPQRSTVWYXXX';
-        clustalOmega.alignSequence(input, 'fasta', function (err) {
+        clustalOmega.alignSeqString(input, 'fasta', function (err) {
             if (err) {
                 console.log(err);
             }

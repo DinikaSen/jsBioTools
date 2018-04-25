@@ -41,13 +41,6 @@ tcoffee.alignMcoffee = function (inputFile, callback) {
 };
 
 /*
-MSA of Protein Sequences using expresso
- */
-tcoffee.alignExpresso = function (inputFile, callback) {
-    alignSequence('protein', 'expresso', inputFile, callback);
-};
-
-/*
 MSA of DNA Sequences using procoffee
  */
 tcoffee.alignProCoffee = function (inputFile, callback) {
@@ -63,44 +56,55 @@ tcoffee.alignRcoffee = function (inputFile, callback) {
 
 
 function alignSequence(seqType, mode, inputFile, callback) {
-    var tcoffeeCommand = 't_coffee ' + path.resolve(inputFile);
-    if (mode === 'default') {
-        tcoffeeCommand += ' -type=' + seqType;
+    if(fs.existsSync(inputFile)){
+        var tcoffeeCommand = 't_coffee ' + path.resolve(inputFile);
+        if (mode === 'default') {
+            tcoffeeCommand += ' -type=' + seqType;
 
-    }
-    else {
-        tcoffeeCommand += ' -mode=' + mode;
+        }
+        else {
+            tcoffeeCommand += ' -mode=' + mode;
 
+        }
+        run(tcoffeeCommand, function (err) {
+            if(err){
+                return callback(err);
+            }
+            else{
+                var data = '';
+                var filename = path.basename(inputFile, path.extname(inputFile));
+                data = fs.readFileSync(__dirname+'/'+filename + '.aln', 'utf8');
+                deleteGeneratedFiles(inputFile, mode);
+                return callback(err, data);
+            }
+        });
     }
-    run(tcoffeeCommand, function (err, stdOut, stdError) {
-        deleteGeneratedFiles(inputFile, mode);
-        return callback(err, stdOut, stdError);
-    });
+    else{
+        var err = 'Input file does not exist';
+        return callback(err, null);
+    }
+
 }
 
 function run(command, callback) {
     console.log('RUNNING', command);
-    child_process.exec(command, {maxBuffer: 1024 * 1000}, callback);
+    child_process.exec(command, {cwd: __dirname, maxBuffer: 1024 * 1000}, callback);
 }
 
 function deleteGeneratedFiles(inputFile, mode) {
     var filename = path.basename(inputFile, path.extname(inputFile));
-    var directory = path.resolve(path.dirname(inputFile));
-    fs.unlinkSync(filename + '.aln');
-    fs.unlinkSync(filename + '.dnd');
-    fs.unlinkSync(filename + '.html');
+    fs.unlinkSync(__dirname+'/'+filename + '.aln');
+    fs.unlinkSync(__dirname+'/'+filename + '.dnd');
+    fs.unlinkSync(__dirname+'/'+filename + '.html');
     if (mode === 'rcoffee') {
-        var matches = glob.GlobSync("**/*.rfold").matches;
+        var matches = glob.GlobSync(__dirname+"/*.rfold").matches;
         for (var file in matches[0]) {
             fs.unlinkSync(file);
         }
-        var matches = glob.GlobSync("**/*.template_list").matches;
+        var matches = glob.GlobSync(__dirname+"/*.template_list").matches;
         for (var file in matches[0]) {
             fs.unlinkSync(file);
         }
-    }
-    else if (mode === 'expresso') {
-        fs.unlinkSync(filename + '_pdb1.template_list');
     }
 }
 

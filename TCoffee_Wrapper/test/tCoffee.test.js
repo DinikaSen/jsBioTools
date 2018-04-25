@@ -96,25 +96,6 @@ describe('#Align protein sequences using quickaln mode', function () {
     });
 });
 
-describe('#Align protein sequences using express mode', function () {
-    this.timeout(20000);
-    it('should execute t_coffee command with no error', function (done) {
-        var inspect = stdout.inspect();
-        var inputFile =
-            tcoffee.alignExpresso('TCoffee_Wrapper/test/samples/sample_seq1.fasta',function (err) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    console.log('Success.!');
-                }
-                inspect.restore();
-                assert.deepEqual(inspect.output[1], "Success.!\n");
-                done();
-            });
-    });
-});
-
 describe('#Align DNA sequences using procoffee mode', function () {
     it('should execute t_coffee command with no error', function (done) {
         var inspect = stdout.inspect();

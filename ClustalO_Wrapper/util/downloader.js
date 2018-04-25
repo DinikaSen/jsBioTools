@@ -1,6 +1,5 @@
 const os = require('os');
 const download = require('download-file');
-const fs = require('fs');
 var child_process = require('child_process');
 
 var address = 'http://www.clustal.org/omega/';
@@ -9,7 +8,7 @@ var platform = os.platform();
 var downloader = {};
 
 
-downloader.getClustalOmega = function () {
+getClustalOmega = function () {
     switch (platform) {
         case ('linux'):
             var architecture = os.arch();
@@ -71,5 +70,7 @@ downloadCO = function (url) {
         }
     });
 }
+
+//getClustalOmega();
 
 module.exports = downloader;

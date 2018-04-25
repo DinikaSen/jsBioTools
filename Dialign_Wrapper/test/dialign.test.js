@@ -1,7 +1,11 @@
 /*
-This tests require dialign2-2 binary executable to be installed in Dialign_Wrapper/lib/bin/dialign_package/src
-and DIALIGN2_DIR environment variable to be set pointing to Dialign_Wrapper/lib/bin/dialign_package/dialign2_dir
-NOTE : These are set by default unless user has changed them manually
+This tests require dialign2-2 binary executable to be installed in Dialign_Wrapper/util/bin/dialign_package/src
+and DIALIGN2_DIR environment variable to be set pointing to Dialign_Wrapper/util/bin/dialign_package/dialign2_dir
+
+To download dialign2-2 binary executable and build in the target location run following file :
+                    Dialign_Wrapper/util/downloaderDialign.js
+
+NOTE : The environment variable paths are set by default unless user has changed them manually
 */
 
 require('mocha');
@@ -20,7 +24,7 @@ var dialign = require('../lib/dialign');
 describe('#Set custom execution path', function () {
 
     it('customExecLocation should be set', function (done) {
-        var location = 'Dialign_Wrapper/lib/bin/dialign_package/src';
+        var location = 'Dialign_Wrapper/util/bin/dialign_package/src';
         restoreStdout = stdout.ignore();
         dialign.setCustomLocation(location);
         restoreStdout();
@@ -40,7 +44,7 @@ describe('#Set custom execution path', function () {
 describe('#Set custom environment variable path', function () {
 
     it('customEnvVarPath should be set', function (done) {
-        var location = 'Dialign_Wrapper/lib/bin/dialign_package/dialign2_dir';
+        var location = 'Dialign_Wrapper/util/bin/dialign_package/dialign2_dir';
         restoreStdout = stdout.ignore();
         dialign.setEnvironmentVar(location);
         restoreStdout();
@@ -48,7 +52,7 @@ describe('#Set custom environment variable path', function () {
         done();
     });
     it('customEnvVarPath should not be set', function (done) {
-        var location = 'Dialign_Wrapper/lib';
+        var location = 'Dialign_Wrapper/util';
         restoreStdout = stdout.ignore();
         dialign.setEnvironmentVar(location);
         restoreStdout();
